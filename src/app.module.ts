@@ -5,6 +5,7 @@ import { DatabaseModule } from './core/database/database.module.js';
 import { CoreModule } from './core/core.module.js';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor.js';
+import { AuthModule } from './modules/auth/auth.module.js';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
     UsersModule,
     DatabaseModule,
     CoreModule,
+    AuthModule,
   ],
   providers: [
     {
