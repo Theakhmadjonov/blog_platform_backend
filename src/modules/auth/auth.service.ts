@@ -8,12 +8,14 @@ import bcrypt from 'bcrypt';
 import { PrismaService } from '../../core/database/prisma.service.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
+import { UsersService } from '../users/users.service.js';
 
 @Injectable()
 export class AuthService {
   constructor(
     private db: PrismaService,
     private jwt: JwtService,
+    private user: UsersService,
   ) {}
 
   async register(data: RegisterDto) {
@@ -41,9 +43,7 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
-    const existingUser = await this.db.user.findUnique({
-      where: { email: data.email },
-    });
+    const existingUser = await this.user.existUser(undefined, data.email);
     if (!existingUser)
       throw new ForbiddenException('Email or password is incorrect');
     const comparePassword = await bcrypt.compare(

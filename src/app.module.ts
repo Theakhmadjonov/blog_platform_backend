@@ -6,6 +6,7 @@ import { CoreModule } from './core/core.module.js';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor.js';
 import { AuthModule } from './modules/auth/auth.module.js';
+import { PostModule } from './modules/post/post.module.js';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './modules/auth/auth.module.js';
     DatabaseModule,
     CoreModule,
     AuthModule,
+    PostModule,
   ],
   providers: [
     {

@@ -46,4 +46,16 @@ export class UsersService {
     const { password, ...safeUser } = updatedUserInfo;
     return safeUser;
   }
+
+  async existUser(userId?: string, email?: string) {
+    const findUser = await this.db.user.findFirst({
+      where: {
+        OR: [userId ? { id: userId } : {}, email ? { email: email } : {}],
+      },
+    });
+    if (!findUser) {
+      throw new NotFoundException('User not found');
+    }
+    return findUser;
+  }
 }
