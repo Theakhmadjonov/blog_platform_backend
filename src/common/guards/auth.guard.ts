@@ -16,12 +16,14 @@ export class AuthGuard implements CanActivate {
     if (!token) {
       token = request.cookies.token;
     }
+    if (!token) {
+      throw new ForbiddenException('Token not found');
+    }
     try {
-      console.log(token);
-      const { id, role } = await this.jwtService.verifyAsync(
-        token.token || token,
+      const { userId, email } = await this.jwtService.verifyAsync(
+        token.accessToken || token,
       );
-      request.userId = { id, role };
+      request.userData = { userId, email };
 
       return true;
     } catch (error) {

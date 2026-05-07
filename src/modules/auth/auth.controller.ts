@@ -1,18 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Res,
-} from '@nestjs/common';
-import { AuthService } from './auth.service.js';
-import { UpdateAuthDto } from './dto/update-auth.dto.js';
-import { RegisterDto } from './dto/register.dto.js';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import type { Response } from 'express';
+import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
+import { RegisterDto } from './dto/register.dto.js';
 
 @Controller('auth')
 export class AuthController {

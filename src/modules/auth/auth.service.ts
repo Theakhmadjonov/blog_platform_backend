@@ -15,11 +15,14 @@ export class AuthService {
     private db: PrismaService,
     private jwt: JwtService,
   ) {}
+
   async register(data: RegisterDto) {
     const existingUser = await this.db.user.findUnique({
       where: { email: data.email },
     });
-    if (existingUser) throw new ConflictException('User already exists');
+    if (existingUser) {
+      throw new ConflictException('User already exists');
+    }
     const hashedPassword = await bcrypt.hash(data.password, 12);
     const newUser = await this.db.user.create({
       data: {
@@ -28,8 +31,13 @@ export class AuthService {
         password: hashedPassword,
       },
     });
-    const token = await this.jwt.signAsync({ userId: newUser.id });
-    return token;
+    const token = await this.jwt.signAsync({
+      userId: newUser.id,
+      email: newUser.email,
+    });
+    return {
+      accessToken: token,
+    };
   }
 
   async login(data: LoginDto) {
@@ -43,8 +51,11 @@ export class AuthService {
       existingUser.password,
     );
     if (!comparePassword)
-      throw new ForbiddenException('Email or password incorrect');
-    const token = await this.jwt.signAsync({ userId: existingUser.id });
+      throw new ForbiddenException('Email or password is incorrect');
+    const token = await this.jwt.signAsync({
+      userId: existingUser.id,
+      email: existingUser.email,
+    });
     return token;
   }
 }
