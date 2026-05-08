@@ -44,6 +44,9 @@ export class PostService {
 
   async findAllPosts() {
     const posts = await this.db.post.findMany({
+      where: {
+        published: true,
+      },
       include: {
         author: {
           select: {

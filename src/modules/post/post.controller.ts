@@ -7,7 +7,7 @@ import {
   Post,
   Put,
   Req,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { FreeAuth } from '../../common/decorators/free-auth.decorator';
@@ -51,7 +51,7 @@ export class PostController {
     return await this.postService.publishPost(userId, postId);
   }
 
-  @Put(':postId')
+  @Put('update/:postId')
   async updatePost(
     @Req() req: Request,
     @Body() data: UpdatePostDto,
