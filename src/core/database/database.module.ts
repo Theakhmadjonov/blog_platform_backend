@@ -4,7 +4,7 @@ import { RedisService } from './redis.service.js';
 
 @Global()
 @Module({
-  providers: [RedisService, PrismaService],
-  exports: [RedisService, PrismaService],
+  providers: [PrismaService],
+  exports: [PrismaService],
 })
 export class DatabaseModule {}
