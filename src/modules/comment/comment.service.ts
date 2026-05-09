@@ -13,6 +13,7 @@ export class CommentService {
     const post = await this.prisma.post.findUnique({
       where: {
         id: postId,
+        published: true,
       },
     });
     if (!post) {

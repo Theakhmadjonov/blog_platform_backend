@@ -8,6 +8,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { AuthModule } from './modules/auth/auth.module.js';
 import { PostModule } from './modules/post/post.module.js';
 import { CommentModule } from './modules/comment/comment.module';
+import { LikeModule } from './modules/like/like.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CommentModule } from './modules/comment/comment.module';
     AuthModule,
     PostModule,
     CommentModule,
+    LikeModule,
   ],
   providers: [
     {
