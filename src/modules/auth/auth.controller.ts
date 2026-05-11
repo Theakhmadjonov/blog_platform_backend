@@ -26,6 +26,7 @@ export class AuthController {
     @Body() loginDto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ) {
+    console.log('login keldi');
     const token = await this.authService.login(loginDto);
     res.cookie('token', token, {
       httpOnly: true,
