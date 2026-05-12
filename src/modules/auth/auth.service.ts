@@ -2,6 +2,7 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
@@ -57,5 +58,22 @@ export class AuthService {
       email: existingUser.email,
     });
     return token;
+  }
+
+  async getMe(userId: string) {
+    console.log(userId);
+    const findUSer = await this.db.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        name: true,
+        id: true,
+        email: true,
+        posts: true,
+      },
+    });
+    if (!findUSer) throw new NotFoundException('User not found');
+    return findUSer;
   }
 }

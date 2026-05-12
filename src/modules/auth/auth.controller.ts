@@ -1,8 +1,9 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
 import { RegisterDto } from './dto/register.dto.js';
+import { AuthGuard } from '../../common/guards/auth.guard.js';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +34,13 @@ export class AuthController {
       maxAge: 1.1 * 3600 * 1000,
     });
     return { token };
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard)
+  async getMe(@Req() req: Request) {
+    const { id, role } = req['userId'];
+    return await this.authService.getMe(id);
   }
 
   @Post('logout')
