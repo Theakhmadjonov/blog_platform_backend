@@ -68,14 +68,28 @@ export class PostService {
         id: postId,
       },
       include: {
+        likes: true,
         author: {
           select: {
             comments: true,
             createdAt: true,
             email: true,
-            likes: true,
             name: true,
             id: true,
+          },
+        },
+      },
+    });
+    const comments = await this.db.comment.findMany({
+      where: {
+        postId: postId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
           },
         },
       },
@@ -83,12 +97,12 @@ export class PostService {
     if (!post) {
       throw new NotFoundException('Post not found');
     }
-    return post;
+    return { data: post, comments };
   }
 
   private async checkOwnership(userId: string, postId: string) {
     const post = await this.getPost(postId);
-    if (post.author.id !== userId) {
+    if (post.data.author.id !== userId) {
       throw new ForbiddenException('You are not owner of this post');
     }
     return post;

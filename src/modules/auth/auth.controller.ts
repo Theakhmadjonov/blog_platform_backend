@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import type { Response } from 'express';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
@@ -28,18 +37,19 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     console.log('login keldi');
-    const token = await this.authService.login(loginDto);
+    const { token, userData: data } =
+      await this.authService.login(loginDto);
     res.cookie('token', token, {
       httpOnly: true,
       maxAge: 1.1 * 3600 * 1000,
     });
-    return { token };
+    return { token, data };
   }
 
   @Get('me')
   @UseGuards(AuthGuard)
   async getMe(@Req() req: Request) {
-    console.log("me keldi");
+    if (!req['userid']) throw new NotFoundException('User not found');
     const { id, role } = req['userId'];
     return await this.authService.getMe(id);
   }

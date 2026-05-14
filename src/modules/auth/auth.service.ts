@@ -57,7 +57,11 @@ export class AuthService {
       userId: existingUser.id,
       email: existingUser.email,
     });
-    return token;
+    const userData = { email: existingUser.email, name: existingUser.name, id: existingUser.id };
+    return {
+      token,
+      userData
+    };
   }
 
   async getMe(userId: string) {
