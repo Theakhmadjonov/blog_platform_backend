@@ -58,6 +58,9 @@ export class PostService {
         likes: true,
         _count: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     return posts;
   }
@@ -119,10 +122,12 @@ export class PostService {
 
   async updatePost(userId: string, postId: string, data: UpdatePostDto) {
     await this.checkOwnership(userId, postId);
+    console.log(data);
     const updatedPost = await this.db.post.update({
       where: { id: postId },
       data: { ...data },
     });
+    console.log(updatedPost);
     return updatedPost;
   }
 
