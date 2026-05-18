@@ -17,14 +17,12 @@ export class LikeController {
 
   @Post(':postId')
   async likePost(@Req() req: Request, @Param('postId') postId: string) {
-    console.log('likega keldi');
     const { userId } = req['userData'];
     return await this.likeService.likePost(userId, postId);
   }
 
   @Delete(':postId')
   async unlikePost(@Req() req: Request, @Param('postId') postId: string) {
-    console.log('dislikega keldi');
     const { userId } = req['userData'];
     return await this.likeService.unlikePost(userId, postId);
   }

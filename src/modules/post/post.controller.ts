@@ -36,7 +36,6 @@ export class PostController {
   @Get('all')
   @FreeAuth()
   async findAllPosts() {
-    console.log("postlarga keldi");
     return await this.postService.findAllPosts();
   }
 
